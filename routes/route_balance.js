@@ -1,6 +1,6 @@
 var express = require('express')
 var router = express.Router()
-var controller = require('../controllers/controller_card')
+var controller = require('../controllers/controller_balance')
 const { validationResult, body, param } = require('express-validator')
 
 //rota acessada por admin

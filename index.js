@@ -7,6 +7,7 @@ const products = require('./routes/route_products');
 const cards = require('./routes/route_cards');
 const favorites = require('./routes/route_favorites');
 const test_users = require('./routes/route_test_users');
+const balance = require('./routes/route_balance');
 
 app.use(express.json());
 
@@ -14,7 +15,8 @@ app.use(express.json());
 app.use('/products', products);
 app.use('/cards', cards);
 app.use('/favorites', favorites);
-app.use('/', test_users)
+app.use('/', test_users);
+app.use('/balance', balance);
 
 
 // MONGOOSE
