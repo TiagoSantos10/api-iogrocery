@@ -1,0 +1,9 @@
+node_modules/
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# dotenv environment variables file
+.env
+.env.test
