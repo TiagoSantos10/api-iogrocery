@@ -11,4 +11,12 @@ router.post('/', function (req, res) {
     controller.addProduct(req, res);
 })
 
+router.get('/:id', function(req, res) {
+    controller.getProductById(req, res);
+})
+
+router.put('/:id', function(req, res) {
+    controller.editProduct(req, res);
+})
+
 module.exports = router
