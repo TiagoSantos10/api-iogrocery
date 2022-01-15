@@ -12,12 +12,12 @@ const list = (res) => {
 }
 
 const addCard = (req, res, next) => {
-    console.log(req.body);
+  
     user.find({email: req.body.email} ,function (err, user){
         if (user[0] != undefined) {
-            console.log("User already exists");
+            res.status(400).send(err)
         } else {
-            console.log("Creating user...");
+            
             const newCard = new card({
                 person: req.body.person,
                 amount: req.body.amount
@@ -27,9 +27,7 @@ const addCard = (req, res, next) => {
                 if (err) {
                     res.status(400).send(err);
                 }
-                req.card = JSON.stringify(card);
-                console.log(JSON.stringify(card));
-                //res.status(200).json(card);
+                req.card = (card);
                 next();
             })
         }

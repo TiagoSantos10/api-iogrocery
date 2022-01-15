@@ -9,12 +9,13 @@ const list = (res) => {
     })
 }
 
+
 const addUser = (req, res) => {
-    console.log("here",req.card);
+    
     const newUser = new user({
         email: req.body.email,
         token: "",
-        name: req.card.person,
+        user_name: req.card.person,
         height: 0,
         weight: 0,
         card: req.card._id,
