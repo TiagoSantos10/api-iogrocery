@@ -7,4 +7,8 @@ router.get('/',  function (req, res) {
     controller.list(res); 
 })
 
+router.post('/', function (req, res) {
+    controller.addProduct(req, res);
+})
+
 module.exports = router
