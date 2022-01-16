@@ -7,6 +7,7 @@ var controller_card = require('../controllers/controller_card')
 var controller_products = require('../controllers/controller_product')
 var controller_favorites = require('../controllers/controller_favorites')
 var controller_notifications = require('../controllers/controller_notifications')
+var controller_water = require('../controllers/controller_water')
 const { validationResult, body, param } = require('express-validator')
 
 //rota acessada por admin
@@ -21,10 +22,14 @@ router.route('/:id/favorites')
 
 router.route('/:id/notifications')
     .get(controller_notifications.getAllUserNotifications)
-
+    
+router.route('/:id/water')
+    .get(controller_water.getUserDailyWater)
+    .post(controller_water.addWater)
 router.route('/:id')
     .get(controller.getProfile)
     .post(controller_products.checkQuantity, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_purchases.addPurchase)
     .put(controller_card.updateAmount)
-
+    .patch(controller.editProfile)
+    
 module.exports = router
