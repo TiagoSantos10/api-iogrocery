@@ -29,7 +29,9 @@ const addCard = (req, res, next) => {
             
             const newCard = new card({
                 person: req.body.person,
-                amount: req.body.amount
+                amount: req.body.amount,
+                amountSpent: 0
+                
             });
 
             newCard.save(function(err, card) {
@@ -44,18 +46,41 @@ const addCard = (req, res, next) => {
 }
 
 const checkAmount = (req, res, next) => {
-    card.find({_id: ObjectId(`${req.params.id}`)}, function(err, user) {
+    card.find({_id: ObjectId(`${req.params.id}`)}, function(err, cards) {
         if (err) {
             res.status(400).send(err);
         }
         console.log("card if", req.amount);
-        console.log(user[0]);
-        if (user[0].amount < req.amount) {
-            return res.status(400).json("You don't have enough money.")
+        console.log(cards[0]);
+        if (cards[0] != undefined) {
+            if (cards[0].amount < req.amount) {
+                return res.status(400).json("You don't have enough money.")
+            }
+            req.old_amount = cards[0].amount;
+            req.movement = "negative";
+            req.new_amount = cards[0].amount - req.amount;
+            req.old_amount_spent = cards[0].amountSpent;
+            next();
+        } else {
+            res.status(404).json("User not found.")
         }
-        req.old_amount = user[0].amount;
-        req.movement = "negative";
-        req.new_amount = user[0].amount - req.amount;
+        
+    })
+}
+
+const updateSpentAmount = (req, res, next) => {
+    console.log("old amount spent",req.old_amount_spent);
+    console.log("amount",req.amount);
+
+    card.updateOne({_id: ObjectId(`${req.params.id}`) }, {
+        $set: {
+            'amountSpent': req.old_amount_spent + req.amount
+        }
+    }, function (err, userEdited) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        console.log(userEdited);
         next();
     })
 }
@@ -105,3 +130,4 @@ exports.addCard = addCard;
 exports.checkAmount = checkAmount;
 exports.updateAmount = updateAmount;
 exports.getUserCard = getUserCard;
+exports.updateSpentAmount = updateSpentAmount;

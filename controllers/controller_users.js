@@ -1,34 +1,34 @@
-const user = require("../models/model_users"); 
+const user = require("../models/model_users");
 const card = require("../models/model_card");
 const ObjectId = require('mongodb').ObjectId;
 
 const list = (res) => {
     user.find(function (err, users) {
         if (err) {
-            res.status(400).send(err); 
+            res.status(400).send(err);
         }
-        res.status(200).json(users); 
+        res.status(200).json(users);
     })
 }
 
 const getProfile = (req, res) => {
-    user.find({card: req.params.id},function (err, users) {
+    user.find({ card: req.params.id }, function (err, users) {
         if (err) {
-            res.status(400).send(err); 
+            res.status(400).send(err);
         }
-        card.find({_id: ObjectId(`${req.params.id}`)}, function(err, cards){
+        card.find({ _id: ObjectId(`${req.params.id}`) }, function (err, cards) {
             res.status(200).json({
                 user: users[0],
                 card: cards[0]
-            }); 
+            });
         })
-        
+
     })
 }
 
 
 const addUser = (req, res) => {
-    
+
     const newUser = new user({
         email: req.body.email,
         token: "",
@@ -40,7 +40,7 @@ const addUser = (req, res) => {
         waterObjective: 1.5
     });
 
-    newUser.save(function(err, nUser) {
+    newUser.save(function (err, nUser) {
         if (err) {
             res.status(400).send(err);
         }
@@ -49,7 +49,7 @@ const addUser = (req, res) => {
 }
 
 const editProfile = (req, res) => {
-    
+
     if (!req.body) {
         return res.status(400).json("Body must be defined.");
     } else if (req.body.height == 0 || !req.body.height) {
@@ -74,6 +74,9 @@ const editProfile = (req, res) => {
         console.log(userEdited);
     })
 }
+
+
+
 exports.list = list;
 exports.addUser = addUser;
 exports.getProfile = getProfile;

@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const cardSchema = mongoose.Schema({
     person: String,
-    amount: Number
+    amount: Number,
+    amountSpent: Number
 });
 
 const card = mongoose.model('iopaymentcard_cards', cardSchema);
