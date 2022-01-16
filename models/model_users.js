@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     token: String,
     user_name: String,
     height: Number,
-    weigth: Number,
+    weight: Number,
     card: String,
     img: String
 });

@@ -1,7 +1,7 @@
 const notification = require("../models/model_notifications"); 
 
-const list = (res) => {
-    notification.find(function (err, notifications) {
+const getAllUserNotifications = (req, res) => {
+    notification.find({card: req.params.id}, function (err, notifications) {
         if (err) {
             res.status(400).send(err); 
         }
@@ -10,7 +10,7 @@ const list = (res) => {
 }
 
 const sendNotification = (req, res) => {
-    const newNotification = new notification({ card: req.body.card , date: Date.now(), message: "Pagamento efetuado."});
+    const newNotification = new notification({ card: req.params.id , date: Date.now(), message: "Compra efetuada."});
 
     newNotification.save(function (err, notification) {
         if (err) {
@@ -20,4 +20,4 @@ const sendNotification = (req, res) => {
     })
 }
 exports.sendNotification = sendNotification;
-exports.list = list;
+exports.getAllUserNotifications = getAllUserNotifications;

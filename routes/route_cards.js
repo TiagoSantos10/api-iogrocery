@@ -12,6 +12,9 @@ router.get('/',  function (req, res) {
 router.route('/')
     .post(controller.addCard, controller_users.addUser)
 
+router.route('/:id')
+    .get(controller.getUserCard)
+
 /* router.post('/', function(req, res) {
     controller.addCard(req, res), controller_users.addUser(req, res);
 }) */

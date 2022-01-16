@@ -9,6 +9,15 @@ const list = (res) => {
     })
 }
 
+const getProfile = (req, res) => {
+    user.find({card: req.params.id},function (err, users) {
+        if (err) {
+            res.status(400).send(err); 
+        }
+        res.status(200).json(users[0]); 
+    })
+}
+
 
 const addUser = (req, res) => {
     
@@ -32,3 +41,4 @@ const addUser = (req, res) => {
 
 exports.list = list;
 exports.addUser = addUser;
+exports.getProfile = getProfile;

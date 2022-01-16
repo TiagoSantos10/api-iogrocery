@@ -11,6 +11,15 @@ const list = (res) => {
     })
 }
 
+const getUserCard = (req, res) => {
+    card.find({_id: ObjectId(`${req.params.id}`)}, function(err, card){
+        if (err) {
+            res.status(400).send(err);
+        }
+        res.status(200).json(card[0]);
+    })
+}
+
 const addCard = (req, res, next) => {
   
     user.find({email: req.body.email} ,function (err, user){
@@ -54,19 +63,37 @@ const checkAmount = (req, res, next) => {
 const updateAmount = (req, res, next) => {
     card.find({ _id: ObjectId(`${req.params.id}`) }, function (err, cardToUpdate) {
         if (cardToUpdate) {
-            card.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
-                $set: {
-                    'amount': req.new_amount
-                }
-            }, function (err, cardEdited) {
-                if (err) {
-                    return res.status(400).send(err);
-                }
-                if (cardEdited.modifiedCount == 1) {
-                    console.log("amount modified");
-                    next();
-                }
-            })
+            if (req.body.amount) {
+                req.new_amount = cardToUpdate[0].amount + req.body.amount;
+                card.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
+                    $set: {
+                        'amount': req.new_amount
+                    }
+                }, function (err, cardEdited) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    if (cardEdited.modifiedCount == 1) {
+                        console.log("amount modified");
+                        res.status(200).json("Carregamento de cartão efetuado com sucesso.")
+                    }
+                })
+            } else {
+                card.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
+                    $set: {
+                        'amount': req.new_amount
+                    }
+                }, function (err, cardEdited) {
+                    if (err) {
+                        return res.status(400).send(err);
+                    }
+                    if (cardEdited.modifiedCount == 1) {
+                        console.log("amount modified");
+                        next();
+                    }
+                })
+            }
+            
         } else {
             res.status(404).json("card not found.");
         }
@@ -77,3 +104,4 @@ exports.list = list;
 exports.addCard = addCard;
 exports.checkAmount = checkAmount;
 exports.updateAmount = updateAmount;
+exports.getUserCard = getUserCard;
