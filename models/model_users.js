@@ -8,9 +8,10 @@ const userSchema = new mongoose.Schema({
     weight: Number,
     card: String,
     img: String,
-    waterObjective:Number
+    waterObjective: Number,
+    role: String
 });
 
 const user = mongoose.model('iopaymentcard_users', userSchema);
 
-module.exports = user; 
+module.exports = user;

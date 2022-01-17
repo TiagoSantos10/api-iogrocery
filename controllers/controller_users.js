@@ -3,7 +3,7 @@ const card = require("../models/model_card");
 const ObjectId = require('mongodb').ObjectId;
 
 const list = (res) => {
-    user.find(function (err, users) {
+    user.find(function(err, users) {
         if (err) {
             res.status(400).send(err);
         }
@@ -12,11 +12,11 @@ const list = (res) => {
 }
 
 const getProfile = (req, res) => {
-    user.find({ card: req.params.id }, function (err, users) {
+    user.find({ card: req.params.id }, function(err, users) {
         if (err) {
             res.status(400).send(err);
         }
-        card.find({ _id: ObjectId(`${req.params.id}`) }, function (err, cards) {
+        card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, cards) {
             res.status(200).json({
                 user: users[0],
                 card: cards[0]
@@ -29,6 +29,14 @@ const getProfile = (req, res) => {
 
 const addUser = (req, res) => {
 
+    if (!req.body) {
+        return res.status(400).json("Body is mandatory.");
+    } else if (!req.body.role || req.body.role == undefined) {
+        return res.status(400).json("Role is mandatory.");
+    } else if (!req.body.email || req.body.email == undefined) {
+        return res.status(400).json("Email is mandatory.");
+    }
+
     const newUser = new user({
         email: req.body.email,
         token: "",
@@ -37,12 +45,13 @@ const addUser = (req, res) => {
         weight: 0,
         card: req.card._id,
         img: "",
-        waterObjective: 1.5
+        waterObjective: 1.5,
+        role: req.body.role
     });
 
-    newUser.save(function (err, nUser) {
+    newUser.save(function(err, nUser) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).json(err);
         }
         return res.status(200).json(nUser);
     })
@@ -66,7 +75,7 @@ const editProfile = (req, res) => {
             'weight': req.body.weight,
             'waterObjective': waterObjective.toFixed(1)
         }
-    }, function (err, userEdited) {
+    }, function(err, userEdited) {
         if (err) {
             res.status(400).send(err);
         }

@@ -1,18 +1,18 @@
 const card = require("../models/model_card");
 const user = require("../models/model_users");
-const ObjectId = require('mongodb').ObjectId; 
+const ObjectId = require('mongodb').ObjectId;
 
 const list = (res) => {
-    card.find(function (err, cards) {
+    card.find(function(err, cards) {
         if (err) {
-            res.status(400).send(err); 
+            res.status(400).send(err);
         }
-        res.status(200).json(cards); 
+        res.status(200).json(cards);
     })
 }
 
 const getUserCard = (req, res) => {
-    card.find({_id: ObjectId(`${req.params.id}`)}, function(err, card){
+    card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, card) {
         if (err) {
             res.status(400).send(err);
         }
@@ -21,22 +21,32 @@ const getUserCard = (req, res) => {
 }
 
 const addCard = (req, res, next) => {
-  
-    user.find({email: req.body.email} ,function (err, user){
+
+    if (!req.body) {
+        return res.status(400).json("Body is mandatory.");
+    } else if (!req.body.person || req.body.person == undefined) {
+        return res.status(400).json("Person is mandatory.");
+    } else if (!req.body.amount || req.body.amount == undefined) {
+        return res.status(400).json("Amount is mandatory.");
+    }
+
+
+
+    user.find({ email: req.body.email }, function(err, user) {
         if (user[0] != undefined) {
-            res.status(400).send(err)
+            return res.status(400).json(err);
         } else {
-            
+
             const newCard = new card({
                 person: req.body.person,
                 amount: req.body.amount,
                 amountSpent: 0
-                
+
             });
 
             newCard.save(function(err, card) {
                 if (err) {
-                    res.status(400).send(err);
+                    return res.status(400).send(err);
                 }
                 req.card = (card);
                 next();
@@ -46,7 +56,7 @@ const addCard = (req, res, next) => {
 }
 
 const checkAmount = (req, res, next) => {
-    card.find({_id: ObjectId(`${req.params.id}`)}, function(err, cards) {
+    card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, cards) {
         if (err) {
             res.status(400).send(err);
         }
@@ -64,19 +74,19 @@ const checkAmount = (req, res, next) => {
         } else {
             res.status(404).json("User not found.")
         }
-        
+
     })
 }
 
 const updateSpentAmount = (req, res, next) => {
-    console.log("old amount spent",req.old_amount_spent);
-    console.log("amount",req.amount);
+    console.log("old amount spent", req.old_amount_spent);
+    console.log("amount", req.amount);
 
-    card.updateOne({_id: ObjectId(`${req.params.id}`) }, {
+    card.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
         $set: {
             'amountSpent': req.old_amount_spent + req.amount
         }
-    }, function (err, userEdited) {
+    }, function(err, userEdited) {
         if (err) {
             res.status(400).send(err);
         }
@@ -86,7 +96,7 @@ const updateSpentAmount = (req, res, next) => {
 }
 
 const updateAmount = (req, res, next) => {
-    card.find({ _id: ObjectId(`${req.params.id}`) }, function (err, cardToUpdate) {
+    card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, cardToUpdate) {
         if (cardToUpdate) {
             if (req.body.amount) {
                 req.new_amount = cardToUpdate[0].amount + req.body.amount;
@@ -94,7 +104,7 @@ const updateAmount = (req, res, next) => {
                     $set: {
                         'amount': req.new_amount
                     }
-                }, function (err, cardEdited) {
+                }, function(err, cardEdited) {
                     if (err) {
                         return res.status(400).send(err);
                     }
@@ -108,7 +118,7 @@ const updateAmount = (req, res, next) => {
                     $set: {
                         'amount': req.new_amount
                     }
-                }, function (err, cardEdited) {
+                }, function(err, cardEdited) {
                     if (err) {
                         return res.status(400).send(err);
                     }
@@ -118,7 +128,7 @@ const updateAmount = (req, res, next) => {
                     }
                 })
             }
-            
+
         } else {
             res.status(404).json("card not found.");
         }
