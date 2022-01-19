@@ -1,16 +1,16 @@
-const purchase = require("../models/model_purchases"); 
+const purchase = require("../models/model_purchases");
 //const ObjectId = require('mongodb').ObjectId; 
 
 const list = (res) => {
-    purchase.find(function (err, purchases) {
+    purchase.find(function(err, purchases) {
         if (err) {
-            res.status(400).send(err); 
+            res.status(400).send(err);
         }
-        res.status(200).json(purchases); 
+        res.status(200).json(purchases);
     })
 }
 
-const addPurchase = (req, res, next) => {
+const addPurchase = (req, res) => {
     const newPurchase = new purchase({
         card: req.params.id,
         balance: req.balance,
@@ -20,9 +20,9 @@ const addPurchase = (req, res, next) => {
 
     newPurchase.save(function(err, purchase) {
         if (err) {
-            return res.status(400).send(err); 
+            return res.status(400).send(err);
         }
-        res.status(200).json(purchase);
+        return res.status(200).json(purchase);
     })
 }
 

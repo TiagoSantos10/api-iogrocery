@@ -2,7 +2,7 @@ const product = require("../models/model_product");
 const ObjectId = require('mongodb').ObjectId;
 
 const list = (res) => {
-    product.find(function (err, products) {
+    product.find(function(err, products) {
         if (err) {
             res.status(400).send(err);
         }
@@ -11,31 +11,29 @@ const list = (res) => {
 }
 
 const addProduct = (req, res) => {
-    const price_per_unit = (function () {
+    const price_per_unit = (function() {
         let price_per_unit = (req.body.price / req.body.units);
 
         return price_per_unit.toFixed(2);
     })
 
-    const availableQuantity = (function () {
-        return parseInt(req.body.quantity) * parseInt(req.body.units);
-    })
-    //not tested
+    const availableQuantity = (function() {
+            return parseInt(req.body.quantity) * parseInt(req.body.units);
+        })
+        //not tested
 
-    const newProduct = new product(
-        {
-            price: req.body.price,
-            units: req.body.units,
-            price_per_unit: price_per_unit(),
-            name: req.body.name,
-            bought_by: req.body.bought_by,
-            quantity: availableQuantity(),
-            last_refilled: Date.now(),
-            img: req.body.img
-        }
-    );
+    const newProduct = new product({
+        price: req.body.price,
+        units: req.body.units,
+        price_per_unit: price_per_unit(),
+        name: req.body.name,
+        bought_by: req.body.bought_by,
+        quantity: availableQuantity(),
+        last_refilled: Date.now(),
+        img: req.body.img
+    });
 
-    newProduct.save(function (err, product) {
+    newProduct.save(function(err, product) {
         if (err) {
             res.status(400).send(err);
         }
@@ -44,7 +42,7 @@ const addProduct = (req, res) => {
 }
 
 const getProductById = (req, res) => {
-    product.find({ _id: ObjectId(`${req.params.id}`) }, function (err, product) {
+    product.find({ _id: ObjectId(`${req.params.id}`) }, function(err, product) {
         if (err) {
             res.status(400).send(err);
         }
@@ -57,13 +55,13 @@ const getProductById = (req, res) => {
 }
 
 const editProduct = (req, res) => {
-    product.find({ _id: ObjectId(`${req.params.id}`) }, function (err, productToAdd) {
+    product.find({ _id: ObjectId(`${req.params.id}`) }, function(err, productToAdd) {
         if (productToAdd) {
             product.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
                 $set: {
                     'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units)
                 }
-            }, function (err, productEdited) {
+            }, function(err, productEdited) {
                 if (err) {
                     res.status(400).send(err);
                 }
@@ -77,10 +75,10 @@ const editProduct = (req, res) => {
     });
 }
 
-//não está a remover o numero de produtos necessarios da base de dados.
+
 const updateQuantity = (req, res, next) => {
     for (let index = 0; index < req.body.products.length; index++) {
-        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, productToUpdate) {
+        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function(err, productToUpdate) {
             if (productToUpdate) {
                 let newQuantity = productToUpdate[0].quantity - req.body.products[index].quantity;
                 console.log("newQuantity", newQuantity);
@@ -88,9 +86,9 @@ const updateQuantity = (req, res, next) => {
                     $set: {
                         'quantity': newQuantity
                     }
-                }, function (err, productEdited) {
+                }, function(err, productEdited) {
                     if (err) {
-                        res.status(400).send(err);
+                        return res.status(400).send(err);
                     }
                     console.log(productEdited);
                 })
@@ -98,23 +96,22 @@ const updateQuantity = (req, res, next) => {
                     next();
                 }
             } else {
-                res.status(404).json("Product not found.");
+                return res.status(404).json("Product not found.");
             }
         });
-        
+
     }
-    
+
 }
 
 const checkQuantity = (req, res, next) => {
     let sumAmount = 0;
     for (let index = 0; index < req.body.products.length; index++) {
-        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, product) {
+        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function(err, product) {
             console.log(req.body.products[index]);
             if (err) {
                 res.status(400).send(err);
             }
-            //console.log(product[0]);
             if (product[0].quantity < req.body.products[index].quantity) {
                 return res.status(400).json("Quantidade de produtos insuficiente");
             } else {

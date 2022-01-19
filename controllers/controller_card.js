@@ -130,7 +130,7 @@ const updateAmount = (req, res, next) => {
             }
 
         } else {
-            res.status(404).json("card not found.");
+            return res.status(404).json("card not found.");
         }
     });
 }
