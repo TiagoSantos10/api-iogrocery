@@ -34,5 +34,16 @@ const addBalance = (req, res, next) => {
     })
 }
 
+const getUserBalance = async (req, res) => {
+    let userBalance = await balance.find({card: req.params.id});
+
+    if (userBalance.length !== 0) {
+        res.status(200).json(userBalance);
+    } else {
+        res.status(404).json("User doesnt have any balance records");
+    }
+}
+
 exports.list = list;
 exports.addBalance = addBalance;
+exports.getUserBalance = getUserBalance;

@@ -26,6 +26,17 @@ const addPurchase = (req, res) => {
     })
 }
 
+const getUserPurchases = async (req, res) => {
+    let userPurchases = await purchase.find({card: req.params.id});
+
+    if (userPurchases.length !== 0) {
+        res.status(200).json(userPurchases);
+    } else {
+        res.status(404).json("User doesnt have any purchases records");
+    }
+}
+
 
 exports.list = list;
 exports.addPurchase = addPurchase;
+exports.getUserPurchases = getUserPurchases;

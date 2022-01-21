@@ -12,7 +12,7 @@ var controller_cupons = require('../controllers/controller_cupons')
 const { validationResult, body, param } = require('express-validator')
 
 //rota acessada por admin
-router.get('/', function(req, res) {
+router.get('/', function (req, res) {
     controller.list(res);
 })
 
@@ -30,6 +30,12 @@ router.route('/:id/water')
 
 router.route('/:id/cupons')
     .get(controller_cupons.getUserCupons)
+
+router.route('/:id/balance')
+    .get(controller_balance.getUserBalance)
+
+router.route('/:id/purchases')
+    .get(controller_purchases.getUserPurchases)
 
 
 router.route('/:id')
