@@ -1,13 +1,9 @@
 const product = require("../models/model_product");
 const ObjectId = require('mongodb').ObjectId;
 
-const list = (res) => {
-    product.find(function(err, products) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        res.status(200).json(products);
-    })
+const list = async (req, res) => {
+    let products = await product.find({quantity: {$gt: 0}});
+    res.status(200).json(products);
 }
 
 const addProduct = (req, res) => {
@@ -41,16 +37,13 @@ const addProduct = (req, res) => {
     })
 }
 
-const getProductById = (req, res) => {
-    product.find({ _id: ObjectId(`${req.params.id}`) }, function(err, product) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        if (product.length == 0) {
-            res.status(404).json(`Product with id ${req.params.id} not found.`);
-        }
-        res.status(200).json(product);
-    });
+const getProductById = async (req, res) => {
+
+    let productPage = await product.findById(req.params.id);
+
+    if (productPage !== undefined) {
+        res.status(200).json(productPage);
+    }
 
 }
 

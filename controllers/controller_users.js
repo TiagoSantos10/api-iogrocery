@@ -1,6 +1,7 @@
-const user = require("../models/model_users");
+
 const card = require("../models/model_card");
 const ObjectId = require('mongodb').ObjectId;
+const user = require("../models/model_users");
 
 const list = (res) => {
     user.find(function(err, users) {
@@ -11,19 +12,19 @@ const list = (res) => {
     })
 }
 
-const getProfile = (req, res) => {
-    user.find({ card: req.params.id }, function(err, users) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, cards) {
-            res.status(200).json({
-                user: users[0],
-                card: cards[0]
-            });
+const getProfile = async  (req, res) => {
+    let userProfile = await user.findOne({card: req.params.id});
+    let cardProfile = await card.findById(req.params.id);
+    if (cardProfile !== undefined && userProfile !== undefined) {
+        res.status(200).json({
+            userCard: cardProfile,
+            userContent: userProfile
+        });
+    } else {
+        res.status(400).json({
+            error: "User not found."
         })
-
-    })
+    }
 }
 
 

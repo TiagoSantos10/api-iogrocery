@@ -4,7 +4,7 @@ var controller = require('../controllers/controller_product')
 const { validationResult, body, param } = require('express-validator')
 
 router.get('/',  function (req, res) {
-    controller.list(res); 
+    controller.list(req,res); 
 })
 
 router.post('/', function (req, res) {

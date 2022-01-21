@@ -32,7 +32,7 @@ router.route('/:id/cupons')
     .get(controller_cupons.getUserCupons)
 
 
-router.route('/:id') //VERIFICAR TODOS OS RETURNS E TESTAR A ROTA DO BUY PRODUCT
+router.route('/:id')
     .get(controller.getProfile)
     .post(controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_purchases.addPurchase)
     .put(controller_card.updateAmount)
