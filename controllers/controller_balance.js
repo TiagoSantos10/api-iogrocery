@@ -26,7 +26,7 @@ const addBalance = (req, res, next) => {
 
     newBalance.save(function(err, balance) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         console.log("balance",balance);
         req.balance = balance._id

@@ -61,27 +61,33 @@ const getUserCupons = (req, res, next) => {
 }
 
 const removeCupon = (req, res, next) => {
-    cupon.find({ _id: ObjectId(`${req.body.cupon}`) }, function(err, cupons) {
-        if (err) {
-            return res.status(400).json(err);
-        } else {
-            if (cupons.length == 0) {
-                return res.status(404).json("Invalid Cupon");
+    if (req.usedCupon === true) {
+        cupon.find({ _id: ObjectId(`${req.body.cupon}`) }, function(err, cupons) {
+            if (err) {
+                return res.status(400).json(err);
             } else {
-                cupon.deleteOne({ _id: req.body.cupon }, function(err, cupons) {
-                    if (err) {
-                        return res.status(400).send(err);
-                    }
-                    console.log("Cupon deleted");
-                    next();
-                })
+                if (cupons.length == 0) {
+                    return res.status(404).json("Invalid Cupon");
+                } else {
+                    cupon.deleteOne({ _id: req.body.cupon }, function(err, cupons) {
+                        if (err) {
+                            return res.status(400).send(err);
+                        }
+                        console.log("Cupon deleted");
+                        next();
+                    })
+                }
             }
-        }
-    })
+        })
+    } else {
+        next();
+    }
+    
 }
 
 const checkCuponUsed = (req, res, next) => {
     if (req.body.cupon == "") {
+        req.usedCupon = false;
         next();
     } else {
         cupon.find({ _id: ObjectId(`${req.body.cupon}`) }, function(err, cupons) {
@@ -92,7 +98,9 @@ const checkCuponUsed = (req, res, next) => {
                     return res.status(404).json("Invalid Cupon.");
                 } else {
                     req.amount = (req.amount - (req.amount * (cupons[0].discount / 100)));
-                    removeCupon(req, res, next);
+                    req.usedCupon = true;
+                    //removeCupon(req, res, next);
+                    
                     next();
                 }
             }
@@ -103,3 +111,4 @@ const checkCuponUsed = (req, res, next) => {
 exports.addUserCupon = addUserCupon;
 exports.getUserCupons = getUserCupons;
 exports.checkCuponUsed = checkCuponUsed;
+exports.removeCupon = removeCupon;

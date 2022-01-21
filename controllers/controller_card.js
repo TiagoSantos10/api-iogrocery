@@ -58,7 +58,7 @@ const addCard = (req, res, next) => {
 const checkAmount = (req, res, next) => {
     card.find({ _id: ObjectId(`${req.params.id}`) }, function(err, cards) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         console.log("card if", req.amount);
         console.log(cards[0]);
@@ -72,7 +72,7 @@ const checkAmount = (req, res, next) => {
             req.old_amount_spent = cards[0].amountSpent;
             next();
         } else {
-            res.status(404).json("User not found.")
+            return res.status(404).json("User not found.")
         }
 
     })
@@ -88,7 +88,7 @@ const updateSpentAmount = (req, res, next) => {
         }
     }, function(err, userEdited) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         console.log(userEdited);
         next();
