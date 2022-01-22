@@ -3,13 +3,10 @@ const card = require("../models/model_card");
 const ObjectId = require('mongodb').ObjectId;
 const user = require("../models/model_users");
 
-const list = (res) => {
-    user.find(function(err, users) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        res.status(200).json(users);
-    })
+const list = async (req, res) => {
+    
+    let users = await user.find();
+    res.status(200).json(users)
 }
 
 const getProfile = async  (req, res) => {
