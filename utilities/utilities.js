@@ -5,7 +5,7 @@ const generateToken = (user_info, callback) => {
     let secret = config.secret; 
     let token = jwt.sign({
         data: user_info,
-    }, secret, {expiresIn: '24h'});
+    }, secret);
     return callback(token); 
 }
 

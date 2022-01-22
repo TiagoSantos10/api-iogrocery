@@ -13,6 +13,7 @@ const purchases = require('./routes/route_purchases');
 const users = require('./routes/route_users');
 const roles = require('./routes/route_roles');
 const calories = require('./routes/route_calories');
+const auth = require('./routes/route_auth');
 
 app.use(express.json());
 
@@ -20,13 +21,14 @@ app.use(express.json());
 app.use('/products', products);
 app.use('/cards', cards);
 app.use('/favorites', favorites);
-app.use('/', test_users);
+//app.use('/', test_users);
 app.use('/balance', balance);
 app.use('/notifications', notifications);
 app.use('/purchases', purchases);
 app.use('/users', users);
 app.use('/roles', roles);
 app.use('/calories', calories);
+app.use('/login', auth);
 
 
 // MONGOOSE
