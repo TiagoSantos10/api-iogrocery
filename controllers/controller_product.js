@@ -2,21 +2,21 @@ const product = require("../models/model_product");
 const ObjectId = require('mongodb').ObjectId;
 
 const list = async (req, res) => {
-    let products = await product.find({quantity: {$gt: 0}});
+    let products = await product.find({ quantity: { $gt: 0 } });
     res.status(200).json(products);
 }
 
 const addProduct = (req, res) => {
-    const price_per_unit = (function() {
+    const price_per_unit = (function () {
         let price_per_unit = (req.body.price / req.body.units);
 
         return price_per_unit.toFixed(2);
     })
 
-    const availableQuantity = (function() {
-            return parseInt(req.body.quantity) * parseInt(req.body.units);
-        })
-        //not tested
+    const availableQuantity = (function () {
+        return parseInt(req.body.quantity) * parseInt(req.body.units);
+    })
+
 
     const newProduct = new product({
         price: req.body.price,
@@ -26,10 +26,11 @@ const addProduct = (req, res) => {
         bought_by: req.body.bought_by,
         quantity: availableQuantity(),
         last_refilled: Date.now(),
-        img: req.body.img
+        img: req.body.img,
+        code: req.body.code
     });
 
-    newProduct.save(function(err, product) {
+    newProduct.save(function (err, product) {
         if (err) {
             res.status(400).send(err);
         }
@@ -48,13 +49,14 @@ const getProductById = async (req, res) => {
 }
 
 const editProduct = (req, res) => {
-    product.find({ _id: ObjectId(`${req.params.id}`) }, function(err, productToAdd) {
+    product.find({ _id: ObjectId(`${req.params.id}`) }, function (err, productToAdd) {
         if (productToAdd) {
             product.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
                 $set: {
-                    'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units)
+                    'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units),
+                    'code' : req.body.code
                 }
-            }, function(err, productEdited) {
+            }, function (err, productEdited) {
                 if (err) {
                     res.status(400).send(err);
                 }
@@ -71,7 +73,7 @@ const editProduct = (req, res) => {
 
 const updateQuantity = (req, res, next) => {
     for (let index = 0; index < req.body.products.length; index++) {
-        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function(err, productToUpdate) {
+        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, productToUpdate) {
             if (productToUpdate) {
                 let newQuantity = productToUpdate[0].quantity - req.body.products[index].quantity;
                 console.log("newQuantity", newQuantity);
@@ -79,7 +81,7 @@ const updateQuantity = (req, res, next) => {
                     $set: {
                         'quantity': newQuantity
                     }
-                }, function(err, productEdited) {
+                }, function (err, productEdited) {
                     if (err) {
                         return res.status(400).send(err);
                     }
@@ -100,7 +102,7 @@ const updateQuantity = (req, res, next) => {
 const checkQuantity = (req, res, next) => {
     let sumAmount = 0;
     for (let index = 0; index < req.body.products.length; index++) {
-        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function(err, product) {
+        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, product) {
             console.log(req.body.products[index]);
             if (err) {
                 res.status(400).send(err);

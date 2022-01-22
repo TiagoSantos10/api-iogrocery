@@ -8,7 +8,8 @@ const productSchema = mongoose.Schema({
     bought_by: String,
     quantity: Number,
     last_refilled: Date,
-    img: String
+    img: String,
+    code: Number
 });
 
 const product = mongoose.model('iopaymentcard_products', productSchema);

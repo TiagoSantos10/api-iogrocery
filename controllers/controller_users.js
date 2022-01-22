@@ -47,7 +47,8 @@ const addUser = (req, res) => {
         card: req.card._id,
         img: "",
         waterObjective: 1.5,
-        role: req.body.role
+        role: req.body.role,
+        caloresLimit: 0
     });
 
     newUser.save(function(err, nUser) {

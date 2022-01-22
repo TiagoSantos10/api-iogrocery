@@ -12,6 +12,7 @@ const notifications = require('./routes/route_notifications');
 const purchases = require('./routes/route_purchases');
 const users = require('./routes/route_users');
 const roles = require('./routes/route_roles');
+const calories = require('./routes/route_calories');
 
 app.use(express.json());
 
@@ -25,6 +26,7 @@ app.use('/notifications', notifications);
 app.use('/purchases', purchases);
 app.use('/users', users);
 app.use('/roles', roles);
+app.use('/calories', calories);
 
 
 // MONGOOSE
