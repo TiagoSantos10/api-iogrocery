@@ -7,8 +7,8 @@ const ObjectId = require('mongodb').ObjectId;
 
 const getProductCalories = async (req, res) => {
 
-     let splitedName = req.body.name.split(" ");
- 
+    let splitedName = req.body.name.split(" ");
+
     if (splitedName.length == 2) {
         console.log(splitedName[0]);
         console.log(splitedName[1]);
@@ -37,7 +37,7 @@ const getProductCalories = async (req, res) => {
 
         let lista1 = productsList.filter(pr => pr.nome.toLowerCase().includes(req.body.name.toLowerCase()));
 
-       
+
         res.status(200).json({
             lista1: lista1
         })
@@ -150,6 +150,68 @@ const addPortfirProduct = async (req, res) => {
 
 }
 
+const getUserDailyCalories = async (req, res) => {
+    var today = new Date();
+
+    let userContent = await user.findOne({ card: req.params.id });
+
+    if (userContent !== undefined) {
+        let userCaloriesInfo = await calories.find({ card: req.params.id });
+        if (userCaloriesInfo !== undefined) {
+
+
+            caloriesFiltered = userCaloriesInfo.filter(
+                c => c.date.toDateString() == today.toDateString()
+            )
+
+            console.log(caloriesFiltered);
+            let sumQuantity = 0;
+            for (const cal of caloriesFiltered) {
+                sumQuantity += cal.quantity;
+            }
+
+            res.status(200).json({
+                refills: caloriesFiltered,
+                totalQuantity: sumQuantity,
+                caloriesLimit: userContent.caloriesLimit
+            });
+        } else {
+            res.status(404).json("User doesn't have any calories info.");
+        }
+    } else {
+        res.status(404).json("User not found.");
+    }
+
+}
+
+const addCalories =  async (req, res, next) => {
+    let totalCalories = 0;
+    for (const pr of req.body.products) {
+        let productFind = await product.findById(pr.id);
+
+        let portfirFind = await portfir.find({code: productFind.code});
+
+        totalCalories += portfirFind[0].energia;
+        console.log(totalCalories);
+    }
+
+    const newCaloriesRegist = new calories({
+        card: req.params.id,
+        quantity: totalCalories,
+        date: Date.now()
+    })
+
+    newCaloriesRegist.save(function(err, calory) {
+        if (err) {
+            return res.status(400).send(err);
+        }
+        console.log(calory);
+        next()
+    });
+}
+
 exports.getProductCalories = getProductCalories;
 exports.addPortfirProduct = addPortfirProduct;
 exports.createPortfirProduct = createPortfirProduct;
+exports.getUserDailyCalories = getUserDailyCalories;
+exports.addCalories = addCalories;

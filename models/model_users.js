@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
     img: String,
     waterObjective: Number,
     role: String,
-    caloresLimit: Number
+    caloriesLimit: Number
 });
 
 const user = mongoose.model('iopaymentcard_users', userSchema);

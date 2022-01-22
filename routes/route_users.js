@@ -9,6 +9,7 @@ var controller_favorites = require('../controllers/controller_favorites')
 var controller_notifications = require('../controllers/controller_notifications')
 var controller_water = require('../controllers/controller_water')
 var controller_cupons = require('../controllers/controller_cupons')
+var controller_calories = require('../controllers/controller_calories')
 const { validationResult, body, param } = require('express-validator')
 
 //rota acessada por admin
@@ -37,10 +38,13 @@ router.route('/:id/balance')
 router.route('/:id/purchases')
     .get(controller_purchases.getUserPurchases)
 
+router.route('/:id/calories')
+    .get(controller_calories.getUserDailyCalories)
+
 
 router.route('/:id')
     .get(controller.getProfile)
-    .post(controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_purchases.addPurchase)
+    .post(controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories ,controller_purchases.addPurchase)
     .put(controller_card.updateAmount)
     .patch(controller.editProfile)
 

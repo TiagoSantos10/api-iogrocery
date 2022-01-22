@@ -48,7 +48,7 @@ const addUser = (req, res) => {
         img: "",
         waterObjective: 1.5,
         role: req.body.role,
-        caloresLimit: 0
+        caloriesLimit: 0
     });
 
     newUser.save(function(err, nUser) {
@@ -71,11 +71,18 @@ const editProfile = (req, res) => {
 
     const waterObjective = (35 * req.body.weight) / 1000;
 
+    if (!req.body.caloriesLimit) {
+        req.caloriesLimit = 0;
+    } else {
+        req.caloriesLimit = req.body.caloriesLimit;
+    }
+
     user.updateOne({ card: req.params.id }, {
         $set: {
             'height': req.body.height,
             'weight': req.body.weight,
-            'waterObjective': waterObjective.toFixed(1)
+            'waterObjective': waterObjective.toFixed(1),
+            'caloriesLimit': req.caloriesLimit
         }
     }, function(err, userEdited) {
         if (err) {

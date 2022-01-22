@@ -1,4 +1,5 @@
 const product = require("../models/model_product");
+const portfir = require("../models/model_portfir");
 const ObjectId = require('mongodb').ObjectId;
 
 const list = async (req, res) => {
@@ -54,7 +55,7 @@ const editProduct = (req, res) => {
             product.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
                 $set: {
                     'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units),
-                    'code' : req.body.code
+                    'code': req.body.code
                 }
             }, function (err, productEdited) {
                 if (err) {
@@ -102,8 +103,9 @@ const updateQuantity = (req, res, next) => {
 const checkQuantity = (req, res, next) => {
     let sumAmount = 0;
     for (let index = 0; index < req.body.products.length; index++) {
-        product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, product) {
+         product.find({ _id: ObjectId(`${req.body.products[index].id}`) }, function (err, product) {
             console.log(req.body.products[index]);
+            console.log("produto encontrado: ", product[0]);
             if (err) {
                 res.status(400).send(err);
             }
@@ -112,6 +114,7 @@ const checkQuantity = (req, res, next) => {
             } else {
                 console.log("quantidade suficiente");
                 sumAmount += product[0].price_per_unit * req.body.products[index].quantity;
+                
                 console.log("here", sumAmount.toFixed(2));
                 console.log(index);
                 if (index == 0) {
