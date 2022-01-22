@@ -19,37 +19,37 @@ const { validationResult, body, param } = require('express-validator')
 }) */
 
 router.route('/')
-    .get(utilities.validateToken,utilities.verifyAdmin, controller.list)
+    .get(/* utilities.validateToken,utilities.verifyAdmin, */ controller.list)
 
 router.route('/:id/favorites')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_favorites.getAllUserFavorites)
-    .post(utilities.validateToken, utilities.verifyLoggedUser, controller_favorites.addFavorite)
-    .delete(utilities.validateToken, utilities.verifyLoggedUser, controller_favorites.removeFavorite)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.getAllUserFavorites)
+    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.addFavorite)
+    .delete(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.removeFavorite)
 
 router.route('/:id/notifications')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_notifications.getAllUserNotifications)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_notifications.getAllUserNotifications)
 
 router.route('/:id/water')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_water.getUserDailyWater)
-    .post(utilities.validateToken, utilities.verifyLoggedUser, controller_water.addWater)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.getUserDailyWater)
+    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.addWater)
 
 router.route('/:id/cupons')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_cupons.getUserCupons)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_cupons.getUserCupons)
 
 router.route('/:id/balance')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_balance.getUserBalance)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_balance.getUserBalance)
 
 router.route('/:id/purchases')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_purchases.getUserPurchases)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_purchases.getUserPurchases)
 
 router.route('/:id/calories')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_calories.getUserDailyCalories)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_calories.getUserDailyCalories)
 
 
 router.route('/:id')
-    .get(utilities.validateToken, utilities.verifyLoggedUser, controller.getProfile)
-    .post(utilities.validateToken, utilities.verifyLoggedUser, controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories ,controller_purchases.addPurchase)
-    .put(utilities.validateToken,utilities.verifyAdmin, controller_card.updateAmount)
-    .patch(utilities.validateToken, utilities.verifyLoggedUser, controller.editProfile)
+    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.getProfile)
+    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories ,controller_purchases.addPurchase)
+    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_card.updateAmount)
+    .patch(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.editProfile)
 
 module.exports = router
