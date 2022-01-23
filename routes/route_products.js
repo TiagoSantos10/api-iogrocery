@@ -3,23 +3,18 @@ var router = express.Router()
 var controller = require('../controllers/controller_product')
 var controller_calories = require('../controllers/controller_calories')
 const { validationResult, body, param } = require('express-validator')
+var utilities = require('../utilities/utilities')
 
 
 router.route('/')
-    .get(controller.list)
-    .post(controller_calories.createPortfirProduct, controller.addProduct)
+    .get(/* utilities.validateToken */controller.list)
+    .post(/* utilities.validateToken,utilities.verifyAdmin, */ controller_calories.createPortfirProduct, controller.addProduct)
     
 
 router.route('/:id')
-    .get(controller.getProductById)
-    .put(controller_calories.createPortfirProduct ,controller.editProduct)
+    .get(/* utilities.validateToken, */controller.getProductById)
+    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_calories.createPortfirProduct ,controller.editProduct)
 
-/* router.get('/:id', function(req, res) {
-    controller.getProductById(req, res);
-})
 
-router.put('/:id', function(req, res) {
-    controller.editProduct(req, res);
-}) */
 
 module.exports = router
