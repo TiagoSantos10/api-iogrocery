@@ -1,7 +1,7 @@
 const purchase = require("../models/model_purchases");
 //const ObjectId = require('mongodb').ObjectId; 
 
-const list = (res) => {
+const list = (req, res) => {
     purchase.find(function(err, purchases) {
         if (err) {
             res.status(400).send(err);
