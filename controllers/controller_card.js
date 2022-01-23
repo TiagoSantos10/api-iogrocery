@@ -2,7 +2,7 @@ const card = require("../models/model_card");
 const user = require("../models/model_users");
 const ObjectId = require('mongodb').ObjectId;
 
-const list = (res) => {
+const list = (req, res) => {
     card.find(function(err, cards) {
         if (err) {
             res.status(400).send(err);
