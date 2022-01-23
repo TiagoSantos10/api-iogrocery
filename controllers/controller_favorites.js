@@ -33,7 +33,7 @@ const getAllUserFavorites = async (req, res) => {
 const addFavorite = (req, res) => {
     const addProductFavorite = new favorite({
         card: req.params.id,
-        product: req.header('productId')
+        product: req.body.product
     });
 
     addProductFavorite.save(function(err, favorite) {
@@ -45,7 +45,7 @@ const addFavorite = (req, res) => {
 }
 
 const removeFavorite = (req, res) => {
-    favorite.deleteOne({card: req.params.id, product: req.header('productId')}, function(err, favorite) {
+    favorite.deleteOne({card: req.params.id, product: req.body.product}, function(err, favorite) {
         if (err) {
             res.status(400).send(err);
         }
