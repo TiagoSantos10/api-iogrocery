@@ -54,8 +54,7 @@ const editProduct = (req, res) => {
         if (productToAdd) {
             product.updateOne({ _id: ObjectId(`${req.params.id}`) }, {
                 $set: {
-                    'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units),
-                    'code': req.body.code
+                    'quantity': productToAdd[0].quantity + (parseInt(req.body.quantity) * productToAdd[0].units)     
                 }
             }, function (err, productEdited) {
                 if (err) {
