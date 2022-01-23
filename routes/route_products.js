@@ -13,7 +13,7 @@ router.route('/')
 
 router.route('/:id')
     .get(/* utilities.validateToken, */controller.getProductById)
-    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_calories.createPortfirProduct ,controller.editProduct)
+    .put(/* utilities.validateToken,utilities.verifyAdmin, */ /* controller_calories.createPortfirProduct , */controller.editProduct)
 
 
 
