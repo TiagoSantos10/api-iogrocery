@@ -16,5 +16,6 @@ router.route('/')
 
 router.route('/:id')
     .get(/* utilities.validateToken,utilities.verifyAdmin, */ controller.getUserCard)
+    .delete(/* utilities.validateToken,utilities.verifyAdmin, */ controller.removeUserCard)
 
 module.exports = router

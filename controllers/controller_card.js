@@ -144,6 +144,20 @@ const checkUserAmount = async (req, res, next) => {
     next();
 }
 
+const removeUserCard = async (req, res, next) => {
+    /* card.deleteOne({card: req.params.id, product: req.body.product}, function(err, favorite) {
+        if (err) {
+            res.status(400).send(err);
+        }
+        res.status(200).json("Favorito removido com sucesso");
+    }) */
+    let removedCard = await card.deleteOne({_id: ObjectId(`${req.params.id}`)});
+    console.log(removedCard);
+    let removedUser = await user.deleteOne({card: req.params.id});
+    console.log(removedUser);
+    res.status(200).json("Card and user removed with success.")
+}
+
 exports.list = list;
 exports.addCard = addCard;
 exports.checkAmount = checkAmount;
@@ -151,3 +165,4 @@ exports.updateAmount = updateAmount;
 exports.getUserCard = getUserCard;
 exports.updateSpentAmount = updateSpentAmount;
 exports.checkUserAmount = checkUserAmount;
+exports.removeUserCard = removeUserCard;
