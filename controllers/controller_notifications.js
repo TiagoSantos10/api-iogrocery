@@ -10,15 +10,20 @@ const getAllUserNotifications = (req, res) => {
 }
 
 const sendNotification = (req, res, next) => {
-    const newNotification = new notification({ card: req.params.id, date: Date.now(), message: "Compra efetuada." });
+    if (req.message) {
+        const newNotification = new notification({ card: req.params.id, date: Date.now(), message: req.message });
 
-    newNotification.save(function(err, notification) {
-        if (err) {
-            return res.status(400).send(err);
-        }
-        console.log(notification);
+        newNotification.save(function(err, notification) {
+            if (err) {
+                return res.status(400).send(err);
+            }
+            console.log(notification);
+            next();
+        }) 
+    } else {
         next();
-    })
+    }
+    
 }
 exports.sendNotification = sendNotification;
 exports.getAllUserNotifications = getAllUserNotifications;

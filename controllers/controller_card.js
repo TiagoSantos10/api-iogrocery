@@ -135,9 +135,19 @@ const updateAmount = (req, res, next) => {
     });
 }
 
+const checkUserAmount = async (req, res, next) => {
+    let userCard = await card.findById(req.params.id);
+
+    let quantity = req.body.amount + userCard.amount;
+
+    req.message = `Carregamento de cartão efetuado. Novo saldo: ${quantity.toFixed(2)}`;
+    next();
+}
+
 exports.list = list;
 exports.addCard = addCard;
 exports.checkAmount = checkAmount;
 exports.updateAmount = updateAmount;
 exports.getUserCard = getUserCard;
 exports.updateSpentAmount = updateSpentAmount;
+exports.checkUserAmount = checkUserAmount;

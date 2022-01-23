@@ -31,7 +31,7 @@ router.route('/:id/notifications')
 
 router.route('/:id/water')
     .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.getUserDailyWater)
-    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.addWater)
+    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.checkWaterObjective, controller_notifications.sendNotification, controller_water.addWater)
 
 router.route('/:id/cupons')
     .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_cupons.getUserCupons)
@@ -48,8 +48,8 @@ router.route('/:id/calories')
 
 router.route('/:id')
     .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.getProfile)
-    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_products.checkQuantity, controller_cupons.checkCuponUsed, controller_cupons.removeCupon, controller_card.checkAmount, controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories ,controller_purchases.addPurchase)
-    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_card.updateAmount)
+    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_products.checkQuantity,  controller_card.checkAmount, controller_cupons.checkCuponUsed, controller_cupons.removeCupon,controller_notifications.sendNotification,controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon,controller_notifications.sendNotification, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories , controller_calories.checkUserCalories , controller_notifications.sendNotification,controller_purchases.addPurchase)
+    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_card.checkUserAmount,controller_notifications.sendNotification , controller_card.updateAmount)
     .patch(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.editProfile)
 
 module.exports = router

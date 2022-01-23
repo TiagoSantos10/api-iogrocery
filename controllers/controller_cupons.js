@@ -31,6 +31,7 @@ const addUserCupon = (req, res, next) => {
                         return res.status(400).send(err);
                     }
                     console.log(userEdited);
+                    req.message = "Novo cupão disponivel."
                     next();
                 })
             })
@@ -74,6 +75,7 @@ const removeCupon = (req, res, next) => {
                             return res.status(400).send(err);
                         }
                         console.log("Cupon deleted");
+                        req.message = "Cupão usado na compra."
                         next();
                     })
                 }

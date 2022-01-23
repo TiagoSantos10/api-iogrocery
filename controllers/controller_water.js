@@ -58,5 +58,44 @@ const addWater = (req, res) => {
     })
 }
 
+const checkWaterObjective = async (req, res, next) => {
+    var today = new Date();
+   
+    
+    let userContent = await user.findOne({card: req.params.id});
+
+    if (userContent !== undefined) {
+        let userWaterInfo = await water.find({ card: req.params.id });
+        if (userWaterInfo !== undefined) {
+            
+
+            waterFiltered = userWaterInfo.filter(
+                w => w.date.toDateString() == today.toDateString()
+            )
+        
+            console.log(waterFiltered);
+            let sumQuantity = 0;
+            for (const water of waterFiltered) {
+                sumQuantity += water.quantity;
+            }
+
+            if (sumQuantity >= userContent.waterObjective) {
+                req.message = "Parabéns! Atingiu o seu objetivo de água diário!";
+                next();
+            } else {
+                req.message = "Quantidade de água atualizada."
+                next();
+            }
+
+            
+        } else {
+            res.status(404).json("User doesn't have any water info.");
+        }
+    } else {
+        res.status(404).json("User not found.");
+    }
+}
+
 exports.getUserDailyWater = getUserDailyWater;
 exports.addWater = addWater;
+exports.checkWaterObjective = checkWaterObjective;

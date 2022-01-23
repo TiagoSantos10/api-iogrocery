@@ -86,9 +86,11 @@ const updateQuantity = (req, res, next) => {
                     if (err) {
                         return res.status(400).send(err);
                     }
+                    
                     console.log(productEdited);
                 })
                 if (index == 0) {
+                    req.message = "Compra efetuada com sucesso."
                     next();
                 }
             } else {

@@ -210,8 +210,45 @@ const addCalories =  async (req, res, next) => {
     });
 }
 
+const checkUserCalories = async (req, res, next) => {
+    var today = new Date();
+
+    let userContent = await user.findOne({ card: req.params.id });
+
+    if (userContent !== undefined) {
+        let userCaloriesInfo = await calories.find({ card: req.params.id });
+        if (userCaloriesInfo !== undefined) {
+
+
+            caloriesFiltered = userCaloriesInfo.filter(
+                c => c.date.toDateString() == today.toDateString()
+            )
+
+            console.log(caloriesFiltered);
+            let sumQuantity = 0;
+            for (const cal of caloriesFiltered) {
+                sumQuantity += cal.quantity;
+            }
+
+            if ((sumQuantity >= userContent.caloriesLimit) && (userContent.caloriesLimit > 0)) {
+                req.message = "Você já atingiu o seu limite de calorias diário!"
+                next();
+            } else {
+                req.message = "Quantidade de calorias compradas atualizada."
+                next();
+            }
+        } else {
+            res.status(404).json("User doesn't have any calories info.");
+        }
+    } else {
+        res.status(404).json("User not found.");
+    }
+
+}
+
 exports.getProductCalories = getProductCalories;
 exports.addPortfirProduct = addPortfirProduct;
 exports.createPortfirProduct = createPortfirProduct;
 exports.getUserDailyCalories = getUserDailyCalories;
 exports.addCalories = addCalories;
+exports.checkUserCalories = checkUserCalories;
