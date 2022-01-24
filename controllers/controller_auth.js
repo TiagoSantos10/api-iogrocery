@@ -23,7 +23,8 @@ const login = async (req, res) => {
     return res.status(200).json({
         card: userFound[0].card,
         email: userFound[0].email,
-        access_token: token
+        access_token: token,
+        role: userFound[0].role
     });
 
 }
