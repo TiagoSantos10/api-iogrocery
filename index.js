@@ -6,7 +6,6 @@ const port = process.env.PORT || 3000;
 const products = require('./routes/route_products');
 const cards = require('./routes/route_cards');
 const favorites = require('./routes/route_favorites');
-
 const balance = require('./routes/route_balance');
 const notifications = require('./routes/route_notifications');
 const purchases = require('./routes/route_purchases');
@@ -14,6 +13,11 @@ const users = require('./routes/route_users');
 const roles = require('./routes/route_roles');
 const calories = require('./routes/route_calories');
 const auth = require('./routes/route_auth');
+
+//Swagger
+const expressSwagger = require('express-swagger-generator')(app)
+const options = require('./config/swagger_conf')
+expressSwagger(options)
 
 app.use(express.json());
 
