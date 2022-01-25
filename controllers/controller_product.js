@@ -46,8 +46,15 @@ const getProductById = async (req, res) => {
 
     let productPage = await product.findById(req.params.id);
 
+    let caloriesProduct = await portfir.findOne({code: productPage.code});
+
     if (productPage !== undefined) {
-        res.status(200).json(productPage);
+        res.status(200).json({
+            productPage: productPage,
+            calories: caloriesProduct
+        });
+    } else {
+        res.status(404).json("Product Not Found")
     }
 
 }
