@@ -45,7 +45,7 @@ router.route('/')
  * @returns {Error} 400 - Error deleting from favorites
  */
 router.route('/:id/favorites')
-    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.getAllUserFavorites)
+    .get(utilities.validateToken, utilities.verifyLoggedUser, controller_favorites.getAllUserFavorites)
     .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.addFavorite)
     .delete(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_favorites.removeFavorite)
 
@@ -74,7 +74,7 @@ router.route('/:id/notifications')
  */
 router.route('/:id/water')
     .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.getUserDailyWater)
-    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_water.checkWaterObjective, controller_notifications.sendNotification, controller_water.addWater)
+    .post(utilities.validateToken, utilities.verifyLoggedUser, controller_water.checkWaterObjective, controller_notifications.sendNotification, controller_water.addWater)
 
 /**
  * @route GET /users/{id}/cupons
@@ -143,9 +143,9 @@ router.route('/:id/calories')
  * @returns {Error} 400 - Error updating user profile
  */
 router.route('/:id')
-    .get(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.getProfile)
-    .post(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller_products.checkQuantity,  controller_card.checkAmount, controller_cupons.checkCuponUsed, controller_cupons.removeCupon,controller_notifications.sendNotification,controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon,controller_notifications.sendNotification, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories , controller_calories.checkUserCalories , controller_notifications.sendNotification,controller_purchases.addPurchase)
-    .put(/* utilities.validateToken,utilities.verifyAdmin, */ controller_card.checkUserAmount,controller_notifications.sendNotification , controller_card.updateAmount)
-    .patch(/* utilities.validateToken, utilities.verifyLoggedUser, */ controller.editProfile)
+    .get(utilities.validateToken, utilities.verifyLoggedUser, controller.getProfile)
+    .post(utilities.validateToken, utilities.verifyLoggedUser, controller_products.checkQuantity,  controller_card.checkAmount, controller_cupons.checkCuponUsed, controller_cupons.removeCupon,controller_notifications.sendNotification,controller_balance.addBalance, controller_card.updateSpentAmount, controller_cupons.addUserCupon,controller_notifications.sendNotification, controller_card.updateAmount, controller_products.updateQuantity, controller_notifications.sendNotification, controller_calories.addCalories , controller_calories.checkUserCalories , controller_notifications.sendNotification,controller_purchases.addPurchase)
+    .put(utilities.validateToken,utilities.verifyAdmin, controller_card.checkUserAmount,controller_notifications.sendNotification , controller_card.updateAmount)
+    .patch(utilities.validateToken, utilities.verifyLoggedUser, controller.editProfile)
 
 module.exports = router

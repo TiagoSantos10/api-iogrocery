@@ -13,6 +13,6 @@ const { validationResult, body, param } = require('express-validator')
  * @returns {Error} 404 - No purchases found
  */
 router.route('/')
-    .get(/* utilities.validateToken,utilities.verifyAdmin, */ controller.list)
+    .get(utilities.validateToken,utilities.verifyAdmin, controller.list)
 
 module.exports = router

@@ -21,8 +21,8 @@ var utilities = require('../utilities/utilities')
  * @returns {Error} 400 - Error creating
  */
 router.route('/')
-    .get(/* utilities.validateToken */controller.list)
-    .post(/* utilities.validateToken,utilities.verifyAdmin, */ controller_calories.createPortfirProduct, controller.addProduct)
+    .get(utilities.validateToken ,controller.list)
+    .post(utilities.validateToken,utilities.verifyAdmin, controller_calories.createPortfirProduct, controller.addProduct)
     
 
 /**
