@@ -4,7 +4,7 @@ const cards = require("../models/model_card");
 const ObjectId = require('mongodb').ObjectId;
 
 
-const list = (res) => {
+const list = (req, res) => {
     balance.find(function (err, balance) {
         if (err) {
             res.status(400).send(err);

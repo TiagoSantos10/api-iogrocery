@@ -5,10 +5,13 @@ var utilities = require('../utilities/utilities')
 
 const { validationResult, body, param } = require('express-validator')
 
-/* router.get('/',  function (req, res) {
-    controller.list( res); 
-}) */
 
+/**
+ * @route GET /purchases
+ * @group Get all purchases
+ * @returns {object} 200 - All purchases
+ * @returns {Error} 404 - No purchases found
+ */
 router.route('/')
     .get(/* utilities.validateToken,utilities.verifyAdmin, */ controller.list)
 

@@ -4,6 +4,9 @@ const ObjectId = require('mongodb').ObjectId;
 
 const list = async (req, res) => {
     let products = await product.find({ quantity: { $gt: 0 } });
+    if (products.length === 0) {
+        res.status(404).json("No products found.")
+    }
     res.status(200).json(products);
 }
 
